@@ -2,11 +2,10 @@ import cv2,os
 import numpy as np
 from PIL import Image 
 
-path = os.path.dirname(os.path.abspath(__file__))
-recognizer = cv2.createLBPHFaceRecognizer()
-cascadePath = path+r"\Classifiers\face.xml"
+recognizer = cv2.face.LBPHFaceRecognizer_create()
+cascadePath = './Classifiers/face.xml'
 faceCascade = cv2.CascadeClassifier(cascadePath);
-dataPath = path+r'\dataSet'
+dataPath = './dataSet/'
 
 def get_images_and_labels(datapath):
      image_paths = [os.path.join(datapath, f) for f in os.listdir(datapath)]
@@ -21,6 +20,7 @@ def get_images_and_labels(datapath):
          image = np.array(image_pil, 'uint8')
          # Get the label of the image
          nbr = int(os.path.split(image_path)[1].split(".")[0].replace("face-", ""))
+         #nbr = 0
          #nbr=int(''.join(str(ord(c)) for c in nbr))
          print(nbr)
          # Detect the face in the image
@@ -40,5 +40,5 @@ cv2.imshow('test',images[0])
 cv2.waitKey(1)
 
 recognizer.train(images, np.array(labels))
-recognizer.save(path+r'\trainer\trainer.yml')
+recognizer.save('./trainer/trainer.yml')
 cv2.destroyAllWindows()
